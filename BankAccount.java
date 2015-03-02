@@ -1,5 +1,3 @@
-BankAccount CLASS 
-
 /**
  * David P. Lopez
  * COP2800
