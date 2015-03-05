@@ -15,7 +15,8 @@ public class BankAccounts {
     private double checkingBalance;
     private double savingsBalance;
     private double bankingFees;
-    private double transactionCount;
+    private double checkingTransactionCount;
+    private double savingsTransactionCount;
     
     /**
      * Constructs a bank account object with a zero balance.
@@ -30,7 +31,7 @@ public class BankAccounts {
     /**
      * Constructs a bank account object with a given balance.
      * @param initialBalChecking the initial balance for checking account
-     * @param initialBalChecking the initial balance for checking account
+     * @param initialBalSavings the initial balance for savings account
      */
     
     public BankAccounts(double initialBalChecking, double initialBalSavings)
@@ -42,40 +43,99 @@ public class BankAccounts {
     /**
      * Deposits money into the bank account
      * @param amount the money to deposit into Savings OR Checking
+     * @param account determines what account the money is deposited into
      * Accounts depending on user input.
      */
     
-    public void depositChecking(double amount)
+    public void deposit(double amount, String account)
     {
-        checkingBalance = (checkingBalance - bankingFees) + amount;
-        transactionCount += 1;
+        String checking = "Checking";
+        String savings = "Savings";
+        
+        if (account.equalsIgnoreCase(checking))
+        {
+            checkingBalance = (checkingBalance - bankingFees) + amount;
+            checkingTransactionCount += 1;
+        }
+        else if (account.equalsIgnoreCase(savings))
+        {
+            savingsBalance = (savingsBalance - bankingFees) + amount;
+            savingsTransactionCount += 1;   
+        }
+        else
+        {
+            System.out.println("ERROR you did not enter "
+                + "the correct account type value");
+        }
     }
-    
-    public void depositSavings(double amount)
-    {
-        savingsBalance = (savingsBalance - bankingFees) + amount;
-        transactionCount += 1;
-    }
-    
     
     /**
      * Withdraws money from the bank account
      * @param amount the money to withdraw 
+     * @param account is the account to withdraw funds from
      */
     
-    public void withdrawChecking(double amount)
+    public void withdraw(double amount, String account)
     {
-        checkingBalance = (checkingBalance - bankingFees) - amount;
-        transactionCount += 1;
+        String checking = "Checking";
+        String savings = "Savings";
+        
+        if (account.equalsIgnoreCase("Checking"))
+        {
+            checkingBalance = (checkingBalance - bankingFees) - amount;
+            checkingTransactionCount += 1;
+        }
+        else if (account.equalsIgnoreCase("Savings"))
+        {
+            savingsBalance = (savingsBalance - bankingFees) - amount;
+            savingsTransactionCount += 1;
+        } 
+        else
+        {
+                System.out.println("ERROR you did not enter "
+                + "the correct account type value");
+        } 
     }
     
-    public void withdrawSavings(double amount)
+    /**
+     * Transfers money between bank accounts
+     * @param amount the money to transfer between accounts
+     * @param account the account to transfer the money into
+     */
+    
+    public void transferFunds(double amount, String account)
     {
-        savingsBalance = (savingsBalance - bankingFees) - amount;
-        transactionCount += 1;
+        if (account.equals("Checking"))
+        {
+            if (amount < (savingsBalance + bankingFees))
+            {
+                savingsBalance -= amount;
+            
+                checkingBalance = (checkingBalance - bankingFees) + amount;
+                checkingTransactionCount += 1; 
+            }
+            else
+            {
+                System.out.println("INSUFFICIENT FUNDS. "
+                        + "CANNOT COMPLETE TRANSACTION!!!");
+            }    
+        }
+        else if (account.equals("Savings"))
+        {
+            if (amount < (checkingBalance + bankingFees))
+            {
+                checkingBalance -= amount;
+                
+                savingsBalance = (savingsBalance - bankingFees) + amount;
+                savingsTransactionCount += 1;
+            }
+            else
+            {
+                System.out.println("INSUFFICIENT FUNDS. "
+                        + "CANNOT COMPLETE TRANSACTION!!!");
+            }    
+        }
     }
-    
-    
     
     /**
      * Accumulates fees to charge the bank account
@@ -92,25 +152,43 @@ public class BankAccounts {
      * resets the transaction count.
      * @param monthlyItemCharge the charge per itemized deposit/withdraw
      */
+    
     public void deductMonthlyCharge(double monthlyItemCharge )
     {
         int freeTransactionsAllotted = 0;
-        double transactionFees;
-        transactionFees = (transactionCount - freeTransactionsAllotted) 
+        double checkingTransactionFees;
+        double savingsTransactionFees;
+        
+        checkingTransactionFees = (checkingTransactionCount - freeTransactionsAllotted) 
+                            * monthlyItemCharge;
+        savingsTransactionFees = (savingsTransactionCount - freeTransactionsAllotted) 
                             * monthlyItemCharge;
         
-        balance -= transactionFees;
-        transactionCount = 0;
+        checkingBalance -= checkingTransactionFees;
+        savingsBalance -= savingsTransactionFees;
+        
+        checkingTransactionCount = 0;
+        savingsTransactionCount = 0;
     }
     
     /**
      * Gets the current balance of the bank account.
-     * @return the current balance
+     * @return the current Checking balance
      */
     
-    public double getBalance()
+    public double getBalanceChecking()
     {
-        return balance;
+        return checkingBalance;
+    }
+    
+    /**
+     * Gets the current balance of the bank account.
+     * @return the current Savings balance
+     */
+    
+    public double getBalanceSavings()
+    {
+        return savingsBalance;
     }
     
 }
