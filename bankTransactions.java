@@ -5,190 +5,117 @@
  */
 package Banking;
 
+import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * 305.467.5719
  * @author david.lopez016@mymdc.net
  */
-public class BankAccounts {
+public class BankAccountsTransactions 
+{
+    public static void main(String[] args)
+    {
+        Logger.getGlobal().setLevel(Level.INFO);
+        
+        Scanner userInput;
+        userInput = new Scanner(System.in);
+        
+        System.out.println("Please initialize your "
+                + "Checking & Savings Account Balances.");
+        System.out.println(" ");
 
-    /** Instance Variables*/
-    private double checkingBalance;
-    private double savingsBalance;
-    private double bankingFees;
-    private double checkingTransactionCount;
-    private double savingsTransactionCount;
-    
-    /**
-     * Constructs a bank account object with a zero balance.
-     */
-    
-    public BankAccounts()
-    {
-        checkingBalance = 0;
-        savingsBalance = 0;
-    }
-    
-    /**
-     * Constructs a bank account object with a given balance.
-     * @param initialBalChecking the initial balance for checking account
-     * @param initialBalSavings the initial balance for savings account
-     */
-    
-    public BankAccounts(double initialBalChecking, double initialBalSavings)
-    {
-        checkingBalance = initialBalChecking;
-        savingsBalance = initialBalSavings;
-    }
-    
-    /**
-     * Deposits money into the bank account
-     * @param amount the money to deposit into Savings OR Checking
-     * @param account determines what account the money is deposited into
-     * Accounts depending on user input.
-     */
-    
-    public void deposit(double amount, String account)
-    {
-        String checking = "Checking";
-        String savings = "Savings";
+        System.out.print("Enter your starting Checking Account Balance: ");
         
-        if (account.equalsIgnoreCase(checking))
+        boolean t3 = true;
+        while(t3)
         {
-            checkingBalance = (checkingBalance - bankingFees) + amount;
-            checkingTransactionCount += 1;
-        }
-        else if (account.equalsIgnoreCase(savings))
-        {
-            savingsBalance = (savingsBalance - bankingFees) + amount;
-            savingsTransactionCount += 1;   
-        }
-        else
-        {
-            System.out.println("ERROR you did not enter "
-                + "the correct account type value");
-        }
-    }
-    
-    /**
-     * Withdraws money from the bank account
-     * @param amount the money to withdraw 
-     * @param account is the account to withdraw funds from
-     */
-    
-    public void withdraw(double amount, String account)
-    {
-        String checking = "Checking";
-        String savings = "Savings";
-        
-        if (account.equalsIgnoreCase("Checking"))
-        {
-            checkingBalance = (checkingBalance - bankingFees) - amount;
-            checkingTransactionCount += 1;
-        }
-        else if (account.equalsIgnoreCase("Savings"))
-        {
-            savingsBalance = (savingsBalance - bankingFees) - amount;
-            savingsTransactionCount += 1;
-        } 
-        else
-        {
-                System.out.println("ERROR you did not enter "
-                + "the correct account type value");
-        } 
-    }
-    
-    /**
-     * Transfers money between bank accounts
-     * @param amount the money to transfer between accounts
-     * @param account the account to transfer the money into
-     */
-    
-    public void transferFunds(double amount, String account)
-    {
-        if (account.equals("Checking"))
-        {
-            if (amount < (savingsBalance + bankingFees))
+            if(userInput.hasNextDouble())
             {
-                savingsBalance -= amount;
-            
-                checkingBalance = (checkingBalance - bankingFees) + amount;
-                checkingTransactionCount += 1; 
+                boolean t1 = true;
+                while(t1)
+                {
+                    double checkingBal = userInput.nextDouble();
+                    if(checkingBal <= 0)
+                    {
+                        System.out.print("ERROR. This action will "
+                                + "overdraft your account!!! "
+                                + "Please enter a positive initial balance: ");
+                    }
+                    else
+                    {
+                        System.out.print("Enter your starting "
+                                + "Savings Account Balance: ");
+                        boolean t2 = true;
+                        while(t2)
+                        {
+                            if(userInput.hasNextDouble())
+                            {
+                                double savingsBal = userInput.nextDouble();
+                                if(savingsBal <= 0)
+                                {
+                                    System.out.print("ERROR. This action will "
+                                            + "overdraft your account!!! "
+                                            + "Please enter a positive initial balance: ");
+                                }
+                                else
+                                {
+                                    BankAccounts account = new BankAccounts(checkingBal, savingsBal);
+                                    t2 = false;
+                                }
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+                        
+                        do
+                        {
+                            System.out.println("Please select one of the "
+                                    + "following transaction options:");
+                            System.out.print("1. Deposit\n"
+                                    + "2. Withdrawl\n"
+                                    + "3. Transfer Funds\n");
+                            
+                            if(userInput.nextInt() == 1)
+                            {
+                                System.out.print("Please select "
+                                        + "1. for Checking or "
+                                        + "2. for Savings: ");
+                                if(userInput.nextInt() == 1)
+                                {
+                                    System.out.print("Please enter "
+                                            + "the deposit amount: ");
+                                    if(userInput.hasNextDouble())
+                                    {
+                                        account.deposit(userInput.nextDouble(),"Checking");
+                                    }
+                                    
+                                    
+                                    
+                                    
+                                }
+                            }
+                      
+                        }while(userInput.hasNextInt());
+                        
+
+
+
+
+
+                        t1 = false;
+                    }   
+                }    
             }
             else
             {
-                System.out.println("INSUFFICIENT FUNDS. "
-                        + "CANNOT COMPLETE TRANSACTION!!!");
-            }    
-        }
-        else if (account.equals("Savings"))
-        {
-            if (amount < (checkingBalance + bankingFees))
-            {
-                checkingBalance -= amount;
-                
-                savingsBalance = (savingsBalance - bankingFees) + amount;
-                savingsTransactionCount += 1;
-            }
-            else
-            {
-                System.out.println("INSUFFICIENT FUNDS. "
-                        + "CANNOT COMPLETE TRANSACTION!!!");
+                System.out.println("Error!!! That is not a valid input!!!"
+                        + "For security purposes we are ending your session.");
+                break;    
             }    
         }
     }
-    
-    /**
-     * Accumulates fees to charge the bank account
-     * @param fee the money to charge for deposits & withdraws 
-     */
-    
-    public void fees(double fee)
-    {
-        bankingFees = fee;
-    }
-    
-    /**
-     * Deducts a monthly charge based on the # of transactions and 
-     * resets the transaction count.
-     * @param monthlyItemCharge the charge per itemized deposit/withdraw
-     */
-    
-    public void deductMonthlyCharge(double monthlyItemCharge )
-    {
-        int freeTransactionsAllotted = 0;
-        double checkingTransactionFees;
-        double savingsTransactionFees;
-        
-        checkingTransactionFees = (checkingTransactionCount - freeTransactionsAllotted) 
-                            * monthlyItemCharge;
-        savingsTransactionFees = (savingsTransactionCount - freeTransactionsAllotted) 
-                            * monthlyItemCharge;
-        
-        checkingBalance -= checkingTransactionFees;
-        savingsBalance -= savingsTransactionFees;
-        
-        checkingTransactionCount = 0;
-        savingsTransactionCount = 0;
-    }
-    
-    /**
-     * Gets the current balance of the bank account.
-     * @return the current Checking balance
-     */
-    
-    public double getBalanceChecking()
-    {
-        return checkingBalance;
-    }
-    
-    /**
-     * Gets the current balance of the bank account.
-     * @return the current Savings balance
-     */
-    
-    public double getBalanceSavings()
-    {
-        return savingsBalance;
-    }
-    
 }
