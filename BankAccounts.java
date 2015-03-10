@@ -104,13 +104,29 @@ public class BankAccounts {
         
         if (account.equalsIgnoreCase("Checking"))
         {
-            checkingBalance = (checkingBalance - bankingFees) - amount;
-            checkingTransactionCount += 1;
+            if(amount > checkingBalance)
+            {
+                checkingBalance = (checkingBalance - bankingFees) - amount;
+                checkingTransactionCount += 1;
+            }
+            else
+            {
+                System.out.println("INSUFFICIENT FUNDS. "
+                        + "CANNOT COMPLETE TRANSACTION!!!");
+            }                    
         }
         else if (account.equalsIgnoreCase("Savings"))
         {
-            savingsBalance = (savingsBalance - bankingFees) - amount;
-            savingsTransactionCount += 1;
+            if(amount > savingsBalance)
+            {
+                savingsBalance = (savingsBalance - bankingFees) - amount;
+                savingsTransactionCount += 1;
+            }
+            else
+            {
+                System.out.println("INSUFFICIENT FUNDS. "
+                        + "CANNOT COMPLETE TRANSACTION!!!");
+            }
         } 
         else
         {
