@@ -36,8 +36,27 @@ public class BankAccounts {
     
     public BankAccounts(double initialBalChecking, double initialBalSavings)
     {
-        checkingBalance = initialBalChecking;
-        savingsBalance = initialBalSavings;
+        if (initialBalChecking < 0)
+        {
+            System.out.println("INSUFFICIENT FUNDS. "
+                            + "CANNOT COMPLETE TRANSACTION!!!"
+                    + "Please initialize your "
+                    + "checking account with a positive balance.");  
+            System.exit(0);
+        }
+        else if (initialBalSavings < 0)
+        {
+            System.out.println("INSUFFICIENT FUNDS. "
+                            + "CANNOT COMPLETE TRANSACTION!!!"
+                    + "Please initialize your "
+                    + "savings account with a positive balance.");  
+            System.exit(0);
+        }
+        else
+        {
+            checkingBalance = initialBalChecking;
+            savingsBalance = initialBalSavings;
+        }
     }
     
     
@@ -68,6 +87,7 @@ public class BankAccounts {
         {
             System.out.println("ERROR you did not enter "
                 + "the correct account type value");
+            System.exit(0);
         }
     }
     
@@ -96,6 +116,7 @@ public class BankAccounts {
         {
                 System.out.println("ERROR you did not enter "
                 + "the correct account type value");
+                System.exit(0);
         } 
     }
     
@@ -107,35 +128,35 @@ public class BankAccounts {
     
     public void transferFunds(double amount, String account)
     {
-        if (account.equals("Checking"))
-        {
-            if (amount < (savingsBalance + bankingFees))
-            {
-                savingsBalance -= amount;
-            
-                checkingBalance = (checkingBalance - bankingFees) + amount;
-                checkingTransactionCount += 1; 
-            }
-            else
-            {
-                System.out.println("INSUFFICIENT FUNDS. "
-                        + "CANNOT COMPLETE TRANSACTION!!!");
-            }    
-        }
-        else if (account.equals("Savings"))
-        {
-            if (amount < (checkingBalance + bankingFees))
-            {
-                checkingBalance -= amount;
-                
-                savingsBalance = (savingsBalance - bankingFees) + amount;
-                savingsTransactionCount += 1;
-            }
-            else
-            {
-                System.out.println("INSUFFICIENT FUNDS. "
-                        + "CANNOT COMPLETE TRANSACTION!!!");
-            }    
+        switch (account) {
+            case "Checking":
+                if (amount < (savingsBalance + bankingFees))
+                {
+                    savingsBalance -= amount;
+                    
+                    checkingBalance = (checkingBalance - bankingFees) + amount;
+                    checkingTransactionCount += 1;
+                }
+                else
+                {
+                    System.out.println("INSUFFICIENT FUNDS. "
+                            + "CANNOT COMPLETE TRANSACTION!!!");
+                    System.exit(0);
+                }   break;
+            case "Savings":
+                if (amount < (checkingBalance + bankingFees))
+                {
+                    checkingBalance -= amount;
+                    
+                    savingsBalance = (savingsBalance - bankingFees) + amount;
+                    savingsTransactionCount += 1;
+                }
+                else
+                {
+                    System.out.println("INSUFFICIENT FUNDS. "
+                            + "CANNOT COMPLETE TRANSACTION!!!");
+                    System.exit(0);
+            }   break;    
         }
     }
     
