@@ -23,99 +23,231 @@ public class BankAccountsTransactions
         userInput = new Scanner(System.in);
         
         System.out.println("Please initialize your "
-                + "Checking & Savings Account Balances.");
+                + "Checking & Savings Account Balances with a positive amount.");
         System.out.println(" ");
+        
+        double savingsBal = 0;
+        double checkingBal = 0;
 
         System.out.print("Enter your starting Checking Account Balance: ");
         
-        boolean t3 = true;
-        while(t3)
+        if(!userInput.hasNextDouble())
         {
-            if(userInput.hasNextDouble())
+            System.out.println("Error!!! This is not a valid input!!!"
+                    + "For security purposes we are ending your session.");
+            System.exit(0);
+        }
+        else
+        {
+            checkingBal = userInput.nextDouble();
+        }
+        
+        System.out.print("Enter your starting Savings Account Balance: ");
+        
+        if(!userInput.hasNextDouble())
+        {
+            System.out.println("Error!!! This is not a valid input!!!"
+                    + "For security purposes we are ending your session.");
+            System.exit(0);
+        }
+        else
+        {
+            savingsBal = userInput.nextDouble();
+        }
+        
+        BankAccounts Account420 = new BankAccounts(checkingBal, savingsBal);
+        
+        System.out.println(" ");
+        System.out.println("Please select from one of "
+                + "the following transaction options: \n"
+                + "1. Deposit \n"
+                + "2. Withdrawal \n"
+                + "3. Transfer Funds \n");
+        
+        if(!userInput.hasNextInt())
+        {
+            System.out.println("Error!!! This is not a valid input!!!"
+                    + "For security purposes we are ending your session.");
+            System.exit(0);
+        }
+        else if(userInput.nextInt() == 1)
+        {
+            System.out.println(" ");
+            System.out.println("Please select the account "
+                    + "where you want to make your deposit: \n"
+                    + "1. Checking \n"
+                    + "2. Savings \n");
+            
+            if(!userInput.hasNextInt())
             {
-                boolean t1 = true;
-                while(t1)
+                System.out.println("Error!!! This is not a valid input!!!"
+                        + "For security purposes we are ending your session.");
+                System.exit(0);
+            }
+            else if(userInput.nextInt() == 1)
+            {
+                System.out.print("Enter the amount to deposit into Checking: ");
+                
+                if(!userInput.hasNextDouble())
                 {
-                    double checkingBal = userInput.nextDouble();
-                    if(checkingBal <= 0)
-                    {
-                        System.out.print("ERROR. This action will "
-                                + "overdraft your account!!! "
-                                + "Please enter a positive initial balance: ");
-                    }
-                    else
-                    {
-                        System.out.print("Enter your starting "
-                                + "Savings Account Balance: ");
-                        boolean t2 = true;
-                        while(t2)
-                        {
-                            if(userInput.hasNextDouble())
-                            {
-                                double savingsBal = userInput.nextDouble();
-                                if(savingsBal <= 0)
-                                {
-                                    System.out.print("ERROR. This action will "
-                                            + "overdraft your account!!! "
-                                            + "Please enter a positive initial balance: ");
-                                }
-                                else
-                                {
-                                    BankAccounts account = new BankAccounts(checkingBal, savingsBal);
-                                    t2 = false;
-                                }
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        
-                        do
-                        {
-                            System.out.println("Please select one of the "
-                                    + "following transaction options:");
-                            System.out.print("1. Deposit\n"
-                                    + "2. Withdrawl\n"
-                                    + "3. Transfer Funds\n");
-                            
-                            if(userInput.nextInt() == 1)
-                            {
-                                System.out.print("Please select "
-                                        + "1. for Checking or "
-                                        + "2. for Savings: ");
-                                if(userInput.nextInt() == 1)
-                                {
-                                    System.out.print("Please enter "
-                                            + "the deposit amount: ");
-                                    if(userInput.hasNextDouble())
-                                    {
-                                        account.deposit(userInput.nextDouble(),"Checking");
-                                    }
-                                    
-                                    
-                                    
-                                    
-                                }
-                            }
-                      
-                        }while(userInput.hasNextInt());
-                        
-
-
-
-
-
-                        t1 = false;
-                    }   
-                }    
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    Account420.deposit(userInput.nextDouble(), "Checking");
+                }
+            }
+            else if(userInput.nextInt() == 2)
+            {
+                System.out.print("Enter the amount to deposit into Savings: ");
+                
+                if(!userInput.hasNextDouble())
+                {
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    Account420.deposit(userInput.nextDouble(), "Savings");
+                }
             }
             else
             {
-                System.out.println("Error!!! That is not a valid input!!!"
-                        + "For security purposes we are ending your session.");
-                break;    
-            }    
+                System.out.println("Error!!! This is not a valid selection!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+            }   
         }
+        else if(userInput.nextInt() == 2)
+        {
+            System.out.println(" ");
+            System.out.println("Please select the account "
+                    + "where you want to make your withdrawal: \n"
+                    + "1. Checking \n"
+                    + "2. Savings \n");
+            
+            if(!userInput.hasNextInt())
+            {
+                System.out.println("Error!!! This is not a valid input!!!"
+                        + "For security purposes we are ending your session.");
+                System.exit(0);
+            }
+            else if(userInput.nextInt() == 1)
+            {
+                System.out.print("Enter the amount to withdrawal from Checking: ");
+                
+                if(!userInput.hasNextDouble())
+                {
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    if(userInput.nextDouble() > 0)
+                        Account420.withdraw(userInput.nextDouble(), "Checking");
+                    else
+                    {
+                        System.out.println("INSUFFICIENT FUNDS. "
+                                + "CANNOT COMPLETE TRANSACTION!!!"
+                                + "Please enter positive amounts ONLY!!!");
+                        System.exit(0);
+                    }
+                }
+            }
+            else if(userInput.nextInt() == 2)
+            {
+                System.out.print("Enter the amount to withdrawal from Savings: ");
+                
+                if(!userInput.hasNextDouble())
+                {
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    if(userInput.nextDouble() > 0)
+                        Account420.withdraw(userInput.nextDouble(), "Savings");
+                    else
+                    {
+                        System.out.println("INSUFFICIENT FUNDS. "
+                                + "CANNOT COMPLETE TRANSACTION!!!"
+                                + "Please enter positive amounts ONLY!!!");
+                        System.exit(0);
+                    }
+                }
+            }
+            else
+            {
+                System.out.println("Error!!! This is not a valid selection!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+            }   
+        }
+        else if(userInput.nextInt() == 3)
+        {
+            System.out.println(" ");
+            System.out.println("Please select the account "
+                    + "that you want to transfer funds into: \n"
+                    + "1. Checking \n"
+                    + "2. Savings \n");
+            
+            if(!userInput.hasNextInt())
+            {
+                System.out.println("Error!!! This is not a valid input!!!"
+                        + "For security purposes we are ending your session.");
+                System.exit(0);
+            }
+            else if(userInput.nextInt() == 1)
+            {
+                System.out.print("Enter the amount to transfer into Checking: ");
+                
+                if(!userInput.hasNextDouble())
+                {
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    Account420.transferFunds(userInput.nextDouble(), "Checking");
+                }
+            }
+            else if(userInput.nextInt() == 2)
+            {
+                System.out.print("Enter the amount to transfer into Savings: ");
+                
+                if(!userInput.hasNextDouble())
+                {
+                    System.out.println("Error!!! This is not a valid input!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+                }
+                else
+                {
+                    Account420.transferFunds(userInput.nextDouble(), "Savings");
+                }
+            }
+            else
+            {
+                System.out.println("Error!!! This is not a valid selection!!!"
+                               + "For security purposes we are ending your session.");
+                    System.exit(0);
+            }
+            
+            
+        }
+        
+        
+        
+        System.out.println(Account420.getBalanceChecking());
+        System.out.println(Account420.getBalanceSavings());
+        
+        
+        
     }
 }
