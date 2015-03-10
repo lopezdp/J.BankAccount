@@ -146,7 +146,7 @@ public class BankAccounts {
     {
         switch (account) {
             case "Checking":
-                if (amount < (savingsBalance + bankingFees))
+                if (amount > (savingsBalance + bankingFees))
                 {
                     savingsBalance -= amount;
                     
@@ -160,7 +160,7 @@ public class BankAccounts {
                     System.exit(0);
                 }   break;
             case "Savings":
-                if (amount < (checkingBalance + bankingFees))
+                if (amount > (checkingBalance + bankingFees))
                 {
                     checkingBalance -= amount;
                     
